@@ -1,5 +1,5 @@
 using System;
-using WineApiRest.Model;
+using MovieApiRest.Model;
 using Xunit;
 
 namespace TestMovieApi

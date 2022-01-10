@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using WineApiRest.Dto;
-using WineApiRest.Model;
+using MovieApiRest.Model;
 
 namespace MovieApiRest.Controllers
 {
