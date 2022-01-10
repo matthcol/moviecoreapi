@@ -10,174 +10,68 @@ using MovieApiRest.Model;
 
 namespace MovieApiRest.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/movies")]
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        private readonly WineDbContext _context;
+        private readonly MovieDbContext _context;
         private readonly ILogger<MoviesController> _logger;
 
-        public MoviesController(WineDbContext context, ILogger<MoviesController> logger)
+        public MoviesController(MovieDbContext context, ILogger<MoviesController> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        // GET: api/Wines
+        // GET: api/movies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetWines()
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            _logger.LogDebug("D: Demande de la carte des vins");
-            _logger.LogInformation("I: Demande de la carte des vins");
-            return await _context.Wines.ToListAsync();
+            _logger.LogDebug("D: get all movies");
+            _logger.LogInformation("I: get all movies");
+            return await _context.Movies.ToListAsync();
         }
 
-        [HttpGet("allNoAsync")]
-        public IEnumerable<Movie> GetWinesNoAsync()
-        {
-            // _logger.LogDebug("Demande de la carte des vins");
-            // SQL : select * from Wines;
-            return _context.Wines
-                .ToList();
-        }
-
-        // GET: api/Wines/5
+        
+        // GET: api/movies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetWine(uint? id)
+        public async Task<ActionResult<Movie>> GetMovie(uint? id)
         {
-            var wine = await _context.Wines.FindAsync(id);
-            _logger.LogDebug($"Wine found #{id} : {wine}");
-            if (wine == null)
+            var movie = await _context.Movies.FindAsync(id);
+            _logger.LogDebug($"Movie found #{id} : {movie}");
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            return wine;
+            return movie;
         }
 
-        // GET: api/Wines/5
-        [HttpGet("asyncnoexcept/{id}")]
-        public async Task<Movie> GetWineAsyncNoException(uint? id)
+        [HttpGet("byTitle")]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMoviesByTitle(
+                [FromQuery(Name = "t")]  string title)
         {
-            // null res is adapted as NoContent
-            return await _context.Wines.FindAsync(id);
+            _logger.LogDebug($"byTitle: {title}");
+            return await _context.Movies
+                .Where(m => m.Title.Contains(title))
+                .ToListAsync();
         }
+        
 
-
-        // GET: api/Wines/5
-        [HttpGet("noasync/{id}")]
-        public ActionResult<Movie> GetWineNoAsync(uint? id)
-        {
-            var wine =  _context.Wines.Find(id);
-
-            if (wine == null)
-            {
-                return NotFound();
-            }
-
-            return wine;
-        }
-
-        [HttpGet("firstByAppellation")]
-        public async Task<ActionResult<Movie>> GetFirstWineByAppellation(
-            [FromBody] string appelation)
-           // [FromQuery(Name = "a")]  string appelation)
-        {
-            _logger.LogDebug($"firstByAppellation: {appelation}");
-            // SQL : select * from Wines w where w.Title = <appelation>
-            try
-            {
-                return await _context.Wines.FirstAsync(w => w.Title == appelation);
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound();
-            } 
-        }
-
-        [HttpGet("firstByAppellationOrSurprise")]
-        public async Task<ActionResult<Movie>> GetFirstWineByAppellationOrSurprise(
-            [FromBody] string appelation)
-        {
-            var defaultWine = new Movie { Title = "Nuit Saint Georges" };
-            // SQL : select * from Wines w where w.Title = <appelation>
-            var res =  await _context.Wines.FirstOrDefaultAsync(w => w.Title == appelation);
-            return res ?? defaultWine;
-        }
-
-        // GET: api/Wines
-        [HttpGet("AppellationColor")]
-        public async Task<ActionResult<IEnumerable<AppellationColor>>> GetAppellattionColor()
-        {
-            return await _context.Wines
-                    .Select(w => new AppellationColor
-                    {
-                        Appellation = w.Title,
-                        Color = w.Color
-                    }).ToListAsync();
-        }
-
-        // PUT: api/Wines/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutWine(uint? id, Movie wine)
-        {
-            if (id != wine.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(wine).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WineExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Wines
+        // POST: api/movies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostWine(Movie wine)
+        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
-            _context.Wines.Add(wine);
+            _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetWine", new { id = wine.Id }, wine);
+            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
         }
 
-        // DELETE: api/Wines/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWine(uint? id)
-        {
-            var wine = await _context.Wines.FindAsync(id);
-            if (wine == null)
-            {
-                return NotFound();
-            }
-
-            _context.Wines.Remove(wine);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool WineExists(uint? id)
+        private bool MovieExists(uint? id)
         {
             // as boolean : select count(*) from Wines w where w.Id = id 
-            return _context.Wines.Any(e => e.Id == id);
+            return _context.Movies.Any(e => e.Id == id);
         }
     }
 }

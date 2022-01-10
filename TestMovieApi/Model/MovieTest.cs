@@ -9,13 +9,16 @@ namespace TestMovieApi
         [Fact]
         public void TestConstructor()
         {
-            var title = "Nuit Saint Georges";
+            var title = "Nobody";
+            short year = 2021;
             var movie = new Movie
             {
-                Title = title
+                Title = title,
+                Year = year
             };
             Assert.NotNull(movie.Title);
             Assert.Equal(title, movie.Title);
+            Assert.Equal(year, movie.Year);
             Assert.Null(movie.Id);
         }
 

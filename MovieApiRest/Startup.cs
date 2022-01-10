@@ -30,12 +30,12 @@ namespace MovieApiRest
         {
 
             services.AddControllers();
-            services.AddDbContext<WineDbContext>(opt =>
-                                               opt.UseInMemoryDatabase("WineDb"));
+            services.AddDbContext<MovieApiRest.Model.MovieDbContext>(opt =>
+                                               opt.UseInMemoryDatabase("dbmovie"));
             // services.AddScoped<ILogger, Logger>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WineApiRestDbr", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieApiRest", Version = "v1" });
             });
         }
 
