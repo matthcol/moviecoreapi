@@ -33,7 +33,6 @@ namespace MovieApiRest
             services.AddDbContext<MovieDbContext>(opt =>
            //MEMORY   opt.UseInMemoryDatabase("dbmovie"));
            //MARIADB  opt.UseMySql(Configuration.GetConnectionString("dbmovie"),new MySqlServerVersion(new Version(10, 4, 21))));
-           opt.UseMySql(Configuration.GetConnectionString("dbmovie"), new MySqlServerVersion(new Version(10, 4, 21))));
             // services.AddScoped<ILogger, Logger>();
             services.AddSwaggerGen(c =>
             {
