@@ -34,6 +34,7 @@ namespace MovieApiRest
                         //MEMORY  opt.UseInMemoryDatabase("dbmovie"));
                         //MARIADB  opt.UseMySql(Configuration.GetConnectionString("dbmovie"),new MySqlServerVersion(new Version(10, 4, 21))));
                         //POSTGRESQL opt.UseNpgsql(Configuration.GetConnectionString("dbmovie")));
+                        //SQLSERVER  opt.UseSqlServer(Configuration.GetConnectionString("dbmovie")));
             // services.AddScoped<ILogger, Logger>();
             services.AddSwaggerGen(c =>
             {

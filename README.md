@@ -9,6 +9,6 @@
 - InMemory : no connection string needed
 - Mariadb with user/password authentication: server=localhost;user id=movie;password=password;database=dbmovie
 - Postgresql with user/password authentication: Host=localhost;Username=movie;Password=password;Database=dbmovie
-- Sqlserver with os authentication: à venir
+- Sqlserver with os authentication: Data Source=localhost;Initial Catalog=dbmovie;Integrated Security=True
 
 
