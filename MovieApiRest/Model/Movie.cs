@@ -8,18 +8,24 @@ using System.Threading.Tasks;
 
 namespace MovieApiRest.Model
 {
+    [Table("movies")]
     public class Movie
     {
+        [Column("id")]
         public uint? Id { get; set; }
-        
+
+        [Column("title")]
         [Required]
         public string Title { get; set; }
-        
+
+        [Column("year")]
         [Required]
         public short? Year { get; set; }
 
+        [Column("duration")]
         public short? Duration { get; set; }
 
+        [Column("synopsis")]
         public string Synopsis { get; set; }
 
         [Column("poster_uri")]
