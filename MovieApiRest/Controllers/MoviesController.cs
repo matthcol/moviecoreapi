@@ -35,7 +35,7 @@ namespace MovieApiRest.Controllers
         
         // GET: api/movies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(uint? id)
+        public async Task<ActionResult<Movie>> GetMovie(int? id)
         {
             var movie = await _context.Movies.FindAsync(id);
             _logger.LogDebug($"Movie found #{id} : {movie}");
@@ -68,7 +68,7 @@ namespace MovieApiRest.Controllers
             return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
         }
 
-        private bool MovieExists(uint? id)
+        private bool MovieExists(int id)
         {
             // as boolean : select count(*) from Wines w where w.Id = id 
             return _context.Movies.Any(e => e.Id == id);

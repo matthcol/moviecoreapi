@@ -12,7 +12,7 @@ namespace MovieApiRest.Model
     public class Movie
     {
         [Column("id")]
-        public uint? Id { get; set; }
+        public int? Id { get; set; }
 
         [Column("title")]
         [Required]
